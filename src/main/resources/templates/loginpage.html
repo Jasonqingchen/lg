@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <link rel = "icon" href ="/imgs/zhkq.jpg">
+    <title>会员查询系统</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+</head>
+<style>
+    .bg-purple {
+        background: #d3dce6;
+    }
+    .bg-purple-light {
+        background: #e5e9f2;
+    }
+    .grid-content {
+        border-radius: 4px;
+        min-height: 36px;
+    }
+    .row-bg {
+        padding: 10px 0;
+        background-color: #f9fafc;
+    }
+    .bgc{
+        background:url("/imgs/login3.jpg");
+        width: 99%;
+        height: 100%;
+    }
+</style>
+<body class="bgc">
+<!--html代码 -->
+<div id="app">
+    <br><br><br><br><br><br><br><br><br>
+    <el-row style="text-align: left;">
+        <el-col :span="8"><div class="grid-content"></div></el-col>
+        <el-col :span="8"><div class="grid-content"></div></el-col>
+        <el-col :span="6"><div style="text-align: center; background-color: #d0e6fc;">
+            <br>
+            <div id="error"></div>
+            <br><br><br>
+            <span style="color: #1E9FFF; font-size: 20px;"><strong>会员查询系统</strong></span>
+            <br><br>
+            <el-form ref="form" :model="form"  label-width="80px" style="width: 400px;text-align: center;">
+                <el-form-item label="用户名">
+                    <el-input  prefix-icon="el-icon-user-solid" v-model="form.name" @focus="nameclik"></el-input>
+                </el-form-item>
+                <el-form-item label="密码">
+                    <el-input  type="password" prefix-icon="el-icon-lock" v-model="form.password"  @focus="passwordclik"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button-group>
+                        <el-button type="primary" @click="loginpage"  style="width: 320px;">登 录</el-button>
+                        <!--<el-button @click="zc"  style="width: 150px;">注 册</el-button>-->
+                    </el-button-group>
+                </el-form-item>
+            </el-form>
+            <br><br><br><br>
+        </div></el-col>
+    </el-row>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script src="/vue/element-ui.min.js"></script>
+<script src="/js/coment.js"></script>
+<script src="/js/loginpage.js"></script>
+</html>

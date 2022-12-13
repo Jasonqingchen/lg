@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <link rel = "icon" href ="/imgs/zhkq.jpg">
+    <title>会员查询系统(列表)</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="/vue/element-ui.min.css">
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+    <script src="https://unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+</head>
+<body>
+<!--html代码 -->
+<div id="app">
+    <el-card class="box-card">
+        <el-col :span="24" Style="background-color: #9ab3c7;" class="bgc">
+            <br><br>
+            <div style="text-align: center;color: #9ab3c7;">
+                <span style="font-size: 40px; color: #FFFFFF;"><strong><!--<i class="el-icon-truck"></i>-->中华口腔医学会镇静镇痛专业委员会会员信息查询系统</strong></span><br>
+                <span style="font-size: 20px; color: #FFFFFF;"><strong>ZHONG HUA KOU QIANG YI XUE ZHEN JING ZHEN TONG ZHUAN YE WEI YUAN HUI HUI YUAN XIN XI CHA XUN XI TONG</strong></span>
+            </div><br><br>
+            <el-button-group style="width: 100%;">
+                <el-form :model="form" :inline="true" class="demo-form-inline">
+                    &nbsp;&nbsp;&nbsp;<el-button size="medium"  @click="add">添加会员</el-button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <el-form-item label="身份证号">
+                        <el-input v-model="form.id" style="width: 450px;" clearable></el-input>
+                    </el-form-item>
+                    <el-button  @click="seach">搜索</el-button>
+                </el-form>
+            </el-button-group>
+        </el-col><br><br>
+    </el-card>
+    <el-card class="box-card" style="text-align: center;">
+        <template>
+           <!-- <el-table
+                    ref="multipleTable"
+                    :data="tableData"
+                    style="width: 100%"
+                    @selection-change="handleSelectionChange">-->
+
+                <el-table
+                        :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize).filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+                        ref="multipleTable"
+                        v-loading="loading"
+                        border
+                        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+                        @selection-change="handleSelectionChange"
+                        style="width: 100%">
+                <el-table-column
+                        type="index"
+                        width="55">
+                </el-table-column>
+                <el-table-column
+                        label="姓名"
+                        width="120"
+                        prop="name">
+                </el-table-column>
+                <el-table-column
+                        label="职称"
+                        prop="zc"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        label="身份证号码"
+                        prop="id"
+                        width="120">
+                </el-table-column>
+                    <el-table-column
+                            label="职务"
+                            prop="zw"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            label="邮箱"
+                            prop="email"
+                            width="150">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="手机号"
+                            prop="sjhm"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            label="工作单位"
+                            prop="gzdw"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            label="入会时间"
+                            prop="startdata"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            label="民族"
+                            prop="mz"
+                            width="100">
+                    </el-table-column>
+                    <el-table-column
+                            label="通讯地址"
+                            prop="txdz"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            label="出生日期"
+                            prop="csrq"
+                            width="120">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="党派"
+                            prop="dp"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            label="性别"
+                            prop="xb"
+                            width="50">
+                    </el-table-column>
+                    <el-table-column
+                            label="会员类型"
+                            prop="hytype"
+                            width="180">
+                    </el-table-column>
+
+                <el-table-column
+                        label="会员证号"
+                        width="180"
+                        prop="hyzh">
+                </el-table-column>
+                <el-table-column
+                        label="到期日期"
+                        prop="enddata"
+                        :formatter="formatDate"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        label="会员状态"
+                        prop="status"
+                        width="180">
+                </el-table-column>
+                <el-table-column label="操作" fixed="right" width="200">
+                    <template slot="header" slot-scope="scope">
+                        <el-input
+                                v-model="search"
+                                size="mini"
+                                placeholder="姓名"/>
+                    </template>
+                    <template slot-scope="scope">
+                        <!--<el-button
+                                size="mini"
+                                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
+                        <el-button
+                                size="mini"
+                                type="danger"
+                                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </template>
+        <!--分页-->
+        <div class="block" style="text-align: center;">
+            <br>
+            <!--<el-button size="mini" style="float: right;" @click="exportExcel"><i
+                    class="el-icon-folder-opened"></i>导出到Excel
+            </el-button>-->
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[5,10,20]"
+                    :page-size="pagesize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="tableData.length">
+            </el-pagination>
+        </div>
+    </el-card>
+    <!--添加会员-->
+    <el-dialog
+            title="新增会员"
+            :visible.sync="addmemb"
+            width="50%">
+        <el-form :model="addForm"  ref="addForm" id="addForm" name="addForm"
+                 label-width="130px">
+            <el-form-item label="姓名：" prop="name">
+                <el-input v-model="addForm.name" id="name" placeholder="请输入姓名"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="身份证号：" prop="id">
+                <el-input v-model="addForm.id" id="id" placeholder="请输入证件号码"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="会员类型：" prop="hytype">
+                <el-input v-model="addForm.hytype" id="hytype" placeholder="请输入会员类型"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="工作单位：" prop="gzdw">
+                <el-input v-model="addForm.gzdw" id="gzdw" placeholder="请输入工作单位"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="民族：" prop="mz">
+                <el-input v-model="addForm.mz" id="mz" placeholder="请输入民族"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="职务：" prop="zw">
+                <el-input v-model="addForm.zw" id="zw" placeholder="请输入职务"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="职称：" prop="zc">
+                <el-input v-model="addForm.zc" id="zc" placeholder="请输入职称"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="通讯地址：" prop="txdz">
+                <el-input v-model="addForm.txdz" id="txdz" placeholder="请输入通讯地址"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="手机号：" prop="sjhm">
+                <el-input v-model="addForm.sjhm" id="sjhm" placeholder="请输入手机号"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="电子邮箱：" prop="email">
+                <el-input v-model="addForm.email" id="email" placeholder="请输入电子邮箱"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="党派：" prop="dp">
+                <el-input v-model="addForm.dp" id="dp" placeholder="请输入党派"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="性别：" prop="xb" >
+                <el-select v-model="addForm.xb" placeholder="请选性别" style="width: 100%;">
+                    <el-option label="男" value="男"></el-option>
+                    <el-option label="女" value="女"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="入会时间：" prop="startdata">
+                <el-date-picker
+                        v-model="addForm.startdata"
+                        type="datetime"
+                        placeholder="选择入会时间" style="width: 100%;">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="到期时间：" prop="enddata">
+                <el-date-picker
+                        v-model="addForm.enddata"
+                        type="datetime"
+                        placeholder="选择到期时间" style="width: 100%;">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="会员号：" prop="hyzh">
+                <el-input v-model="addForm.hyzh" id="hyzh" placeholder="请输入会员号"
+                          style="width: 100%;"></el-input>
+            </el-form-item>
+            <el-form-item label="状态：" prop="status" >
+                <el-select v-model="addForm.status" placeholder="请选择状态" style="width: 100%;">
+                    <el-option label="正式会员" value="正式会员"></el-option>
+                    <el-option label="已过期" value="已过期"></el-option>
+                </el-select>
+            </el-form-item>
+            <br><br>
+            <div style="text-align: center;">
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="info" @click="addmemb = false">取 消</el-button>
+                    <el-button type="primary" @click="submit('addForm')">添  加 会  员</el-button>
+                </span>
+            </div>
+        </el-form>
+    </el-dialog>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script src="/vue/element-ui.min.js"></script>
+<script src="/js/list.js"></script>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <link rel = "icon" href ="/imgs/zhkq.jpg">
+    <title>会员查询系统</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="/vue/element-ui.min.css">
+    <script src="https://unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+</head>
+<style>
+    .bg-purple {
+        background: #d3dce6;
+    }
+    .grid-content {
+        border-radius: 4px;
+        min-height: 50px;
+    }
+    .bgc{
+        background:url("/imgs/222.jpeg");
+        width: 99%;
+        height: 100%;
+    }
+    .input-with-select,.el-input__inner{
+        background: transparent;
+    }
+</style>
+<body class="bgc">
+<!--html代码 -->
+<div id="app">
+    <el-row :gutter="20">
+        <br><br><br><br><br><br><br><br><br>
+        <el-col :span="12" :offset="10">
+            <image src="/imgs/yl.png" style="width: 300px; height: 250px;"></image>
+        </el-col>
+        <br><br><br><br>
+        <el-col :span="12" :offset="6">
+            <div style="margin-top: 15px;">
+                <el-input placeholder="请输入您的身份证号码" v-model="input1" class="input-with-select" style="color: #ffffff;" clearable>
+                    <el-button type="primary" @click="onSubmit" slot="append" icon="el-icon-search" style=" border: #ff392a;">查  询</el-button>
+                </el-input>
+            </div>
+            <br><br><br><br><br><br><br><br><br><br>
+            <div style="text-align: center;">
+                <el-link type="info" :underline="false" style="color: #000000;"><span style="font-size: 18px;">策划：</span>霍文斌</el-link>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-link type="info" :underline="false"  style="color: #000000;"><span style="font-size: 18px;">联系人电话：</span>13488604286 </el-link>
+            </div>
+       </el-col>
+    </el-row>
+    <!--绑定-->
+    <el-dialog
+            title="会员详情"
+            :visible.sync="xq"
+            width="90%">
+        <template>
+            <el-table
+                    :data="tableData"
+                    style="width: 100%">
+                <el-table-column
+                        prop="name"
+                        label="姓名"
+                        width="100">
+                </el-table-column>
+                <el-table-column
+                        prop="xb"
+                        label="性别">
+                </el-table-column>
+                <el-table-column
+                        prop="zc"
+                        label="职称">
+                </el-table-column>
+                <el-table-column
+                        prop="sjhm"
+                        label="联系电话">
+                </el-table-column>
+                <el-table-column
+                        prop="zw"
+                        label="职务">
+                </el-table-column>
+                <el-table-column
+                        prop="txdz"
+                        label="通讯地址">
+                </el-table-column>
+                <el-table-column
+                        prop="hyzh"
+                        label="会员账号">
+                    <template slot-scope="scope">
+                        <div slot="reference" class="name-wrapper">
+                            <el-tag size="danger">{{ scope.row.hyzh }}</el-tag>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="status"
+                        label="会员状态">
+                </el-table-column>
+                <el-table-column
+                        prop="startdata"
+                        label="入会时间">
+                </el-table-column>
+                <el-table-column
+                        prop="enddata"
+                        label="到期日期"
+                        :formatter="formatDate"
+                        width="180">
+                </el-table-column>
+            </el-table>
+        </template>
+
+        <span slot="footer" class="dialog-footer">
+            <el-button  @click="xq = false">关 闭</el-button>
+        </span>
+    </el-dialog>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script src="/vue/element-ui.min.js"></script>
+<script src="/js/seach.js"></script>
+</html>

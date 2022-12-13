@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.LqcSpringBoot.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.example.LqcSpringBoot.model.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="color" property="color" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="dz" property="dz" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="imgid" property="imgid" jdbcType="VARCHAR" />
+    <result column="dldz" property="dldz" jdbcType="VARCHAR" />
+    <result column="rid" property="rid" jdbcType="VARCHAR" />
+    <result column="dlzt" property="dlzt" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.LqcSpringBoot.model.User" >
+    insert into user (id, name, password, 
+      email, bz, color, ip, 
+      sex, age, dz, phone, 
+      imgid, dldz, rid, dlzt, 
+      img)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{bz,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{dz,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{imgid,jdbcType=VARCHAR}, #{dldz,jdbcType=VARCHAR}, #{rid,jdbcType=VARCHAR}, #{dlzt,jdbcType=VARCHAR}, 
+      #{img,jdbcType=LONGVARBINARY})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.LqcSpringBoot.model.User" >
+    update user
+    set name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      bz = #{bz,jdbcType=VARCHAR},
+      color = #{color,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      dz = #{dz,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      imgid = #{imgid,jdbcType=VARCHAR},
+      dldz = #{dldz,jdbcType=VARCHAR},
+      rid = #{rid,jdbcType=VARCHAR},
+      dlzt = #{dlzt,jdbcType=VARCHAR},
+      img = #{img,jdbcType=LONGVARBINARY}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, name, password, email, bz, color, ip, sex, age, dz, phone, imgid, dldz, 
+    rid, dlzt, img
+    from user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, name, password, email, bz, color, ip, sex, age, dz, phone, imgid, dldz, 
+    rid, dlzt, img
+    from user
+  </select>
+  <select id="selectUserByNameAndPassword" resultMap="BaseResultMap" >
+    select id, name, password, email, bz, color, ip, sex, age, dz, phone, imgid, dldz,
+    rid, dlzt, img
+    from user where name=#{name} and password = #{password}
+  </select>
+
+</mapper>

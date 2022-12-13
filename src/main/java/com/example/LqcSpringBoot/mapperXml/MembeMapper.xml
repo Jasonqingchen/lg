@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.LqcSpringBoot.mapper.MembeMapper" >
+  <resultMap id="BaseResultMap" type="com.example.LqcSpringBoot.model.Membe" >
+    <result column="guid" property="guid" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="zc" property="zc" jdbcType="VARCHAR" />
+    <result column="hyzh" property="hyzh" jdbcType="VARCHAR" />
+    <result column="enddata" property="enddata" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="hytype" property="hytype" jdbcType="VARCHAR" />
+    <result column="xb" property="xb" jdbcType="VARCHAR" />
+    <result column="gzdw" property="gzdw" jdbcType="VARCHAR" />
+    <result column="mz" property="mz" jdbcType="VARCHAR" />
+    <result column="zw" property="zw" jdbcType="VARCHAR" />
+    <result column="txdz" property="txdz" jdbcType="VARCHAR" />
+    <result column="sjhm" property="sjhm" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="csrq" property="csrq" jdbcType="VARCHAR" />
+    <result column="dp" property="dp" jdbcType="VARCHAR" />
+    <result column="startdata" property="startdata" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.example.LqcSpringBoot.model.Membe" >
+    insert into membe (guid, id, name, 
+      zc, hyzh, enddata, 
+      status, hytype, xb, 
+      gzdw, mz, zw, txdz, 
+      sjhm, email, csrq, 
+      dp, startdata)
+    values (#{guid,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{zc,jdbcType=VARCHAR}, #{hyzh,jdbcType=VARCHAR}, #{enddata,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{hytype,jdbcType=VARCHAR}, #{xb,jdbcType=VARCHAR}, 
+      #{gzdw,jdbcType=VARCHAR}, #{mz,jdbcType=VARCHAR}, #{zw,jdbcType=VARCHAR}, #{txdz,jdbcType=VARCHAR}, 
+      #{sjhm,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{csrq,jdbcType=VARCHAR}, 
+      #{dp,jdbcType=VARCHAR}, #{startdata,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectMembeById" resultMap="BaseResultMap">
+    select * from membe  where id=#{cid}
+  </select>
+
+  <select id="selectMembeAll" resultMap="BaseResultMap">
+    select * from membe
+  </select>
+
+  <delete id="deleteMembeById">
+    delete from membe where guid = #{guid};
+  </delete>
+
+  <select id="selectCategories" resultMap="BaseResultMap">
+    select zc from membe GROUP BY zc
+  </select>
+
+  <select id="selectNodes" resultMap="BaseResultMap">
+    select name,zc from membe GROUP BY zc,name
+  </select>
+
+  <delete id="cleanTable">
+  truncate table membe
+  </delete>
+  <!--Integer onejjgq();
+  Integer onexyh();-->
+  <!--正式会员-->
+  <select id="onezshy" resultType="java.lang.Integer">
+    select count(1) from membe where status='正式会员'
+  </select>
+
+  <!--已过期-->
+  <select id="oneygq" resultType="java.lang.Integer">
+    select count(1) from membe where status='已过期'
+  </select>
+
+  <!--女-->
+  <select id="onenv" resultType="java.lang.Integer">
+    SELECT count(1) FROM membe where xb='女'
+  </select>
+
+  <!--男-->
+  <select id="onenan" resultType="java.lang.Integer">
+    SELECT count(1) FROM membe where xb='男'
+  </select>
+
+  <select id="getZcAndCount" resultType="java.util.Map">
+    select count(1) as value,zc as name from membe GROUP BY zc
+  </select>
+
+  <select id="selectOderLimit" resultType="java.util.Map">
+    select * from membe limit 500
+  </select>
+
+</mapper>

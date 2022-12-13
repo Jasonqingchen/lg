@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <link rel = "icon" href ="/imgs/zhkq.jpg">
+    <title>会员查询系统（导航）</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="/vue/element-ui.min.css">
+    <script src="https://unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+</head>
+<style>
+    .el-submenu__icon-arrow el-icon-arrow-down{
+        color: #ffffff;
+        width: 150px;
+    }
+    .el-header {
+        background-color: #3C3F41;
+        color: #ffffff;
+        text-align: center;
+        line-height: 50px;
+        overflow:hidden;
+    }
+    .el-main {
+        background-color: #ffffff;
+        color: #ffffff;
+        text-align: center;
+        line-height: 880px;
+        width: 150px;
+        overflow:hidden;
+    }
+    .el-aside {
+        background-color: #ffffff;
+        color: #ffffff;
+        text-align: center;
+        line-height: 920px;
+        width: 150px;
+        overflow:hidden;
+    }
+    .el-submenu__title {
+        width: 150px;
+    }
+    .el-menu-item-group__title {
+        background-color: #3C3F41;
+    }
+    .el-main {
+        width: 150px;
+        background-color: #ffffff;
+        height: 920px;
+    }
+</style>
+<body>
+<div id="app">
+    <el-container>
+        <el-header style="height: 70px;">
+            <el-row>
+                <el-col :span="20"><div class="grid-content bg-purple" style="text-align: left;">
+                    &nbsp;&nbsp;<strong style=" font-size: 30px; color: #ffffff">中华口腔医学会镇静镇痛专业委员会会员信息查询系统 <span style="font-size: 15px; color: #ff9517;">官方联系人: 188xxxx888 公司地址：xxxxxxx xxxxxx 传真：xxxxxx</span></strong>
+                </div></el-col>
+                <el-col :span="4"><div class="grid-content bg-purple-light" style="text-align: right;">
+                    <el-dropdown>
+                        <i class="el-icon-setting" style="margin-right: 15px;color: #ffffff; font-size: 20px;"></i>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item @click.native="out">退出登录</el-dropdown-item>
+                            <el-dropdown-item @click.native="look">查看详情</el-dropdown-item>
+                            <!--<el-dropdown-item>删除</el-dropdown-item>-->
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                    <span id="rname"></span>
+                    <!--<el-avatar src="/imgs/zhkq.jpg"></el-avatar>-->
+                </div></el-col>
+            </el-row>
+
+        </el-header>
+        <el-container>
+            <template>
+                    <div style="background-color: #3C3F41;width: 160px;">
+                    <el-row class="tac" style="width: 160px;">
+                        <el-aside class="nav" style="text-align: left; width:160px;">
+                            <el-menu
+                                    :default-openeds="['1']"
+                                    default-active="1"
+                                    class="el-menu-vertical-demo"
+                                    @select="menuClick"
+                                    @open="handleOpen"
+                                    @close="handleClose"
+                                    background-color="#3C3F41"
+                                    text-color="#fff"
+                                    active-text-color="#DB4E0D"
+                                    >
+                                <el-submenu index="1" style="width: 160px;">
+                                    <template slot="title">
+                                        <i class="el-icon-menu" style="color: #ffffff"></i>
+                                        <el-tooltip class="item" effect="light" :content="content" placement="right-start">
+                                            <el-span id="cd"></el-span>
+                                        </el-tooltip>
+                                    </template>
+                                    <el-menu-item-group style="font-size: 1px;width: 160px;">
+                                        <el-menu-item index="1-1" id="mx" style="font-size: 1px;"><i class="el-icon-search" style="color: #ffffff;"></i>客户查询明细</el-menu-item>
+                                        <el-menu-item index="1-2" id="excel" style="font-size: 1px;"><i class="el-icon-folder-checked" style="color: #FFFFFF"></i>导入会员Excel</el-menu-item>
+                                        <el-menu-item index="1-3" id="list" style="font-size: 1px;"><i class="el-icon-tickets" style="color: #ffffff"></i>会员列表</el-menu-item>
+                                        <el-menu-item index="1-4" id="tp" style="font-size: 1px;"><i class="el-icon-user" style="color: #ffffff"></i>会员关系拓扑图</el-menu-item>
+                                        <el-menu-item index="1-5" id="tjsj" style="font-size: 1px;"><i class="el-icon-pie-chart" style="color: #ffffff"></i>会员数据统计</el-menu-item>
+                                        <el-menu-item index="1-6" id="sp" style="font-size: 1px;"><i class="el-icon-video-camera" style="color: #ffffff"></i>视频会议连接</el-menu-item>
+                                    </el-menu-item-group>
+                                </el-submenu>
+                            </el-menu>
+                        </el-aside>
+                    </el-row>
+                </div>
+            </template>
+            <el-container style="background-color: #2E2D3C; overflow:hidden;">
+                <el-main>
+                        <div id="nr" style="height: 850px; width: 100%;  overflow:hidden;" class="text item"></div>
+                </el-main>
+            </el-container>
+        </el-container>
+    </el-container>
+    <!--绑定-->
+    <el-dialog
+            title="当前登录用户信息列表"
+            :visible.sync="xq"
+            width="40%">
+        <template>
+            <el-table
+                    :data="tableData"
+                    style="width: 100%">
+                <el-table-column
+                        prop="name"
+                        label="姓名"
+                        width="100">
+                </el-table-column>
+                <el-table-column
+                        prop="dz"
+                        label="地址">
+                </el-table-column>
+                <el-table-column
+                        prop="phone"
+                        label="电话">
+                </el-table-column>
+                <el-table-column
+                        prop="email"
+                        label="email">
+                </el-table-column>
+            </el-table>
+        </template>
+
+        <span slot="footer" class="dialog-footer">
+            <el-button  @click="xq = false">关 闭</el-button>
+        </span>
+    </el-dialog>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script src="/vue/element-ui.min.js"></script>
+<script src="/js/coment.js"></script>
+<script src="/js/index.js"></script>
+</html>

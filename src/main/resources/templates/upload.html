@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/imgs/zhkq.jpg">
+    <title>会员查询系统(Excel 导入)</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="/vue/element-ui.min.css">
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+    <script src="https://unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+</head>
+<body>
+<!--html代码 -->
+<div id="app">
+    <br><br><br><br><br><br><br><br><br><br>
+
+    <el-card class="box-card">
+        <el-row :gutter="12">
+            <el-col :span="4" :offset="6">
+                <el-upload
+                        class="upload-demo"
+                        ref="upload"
+                        action="/membe/dr"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        :file-list="fileList"
+                        :auto-upload="false">
+                    <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                    <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">
+                        上传到服务器
+                    </el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传Excel文件</div>
+                </el-upload>
+                <div style="display: inline-block;">
+                    <br>
+                    <form method="get" action="/excel/download">
+                        <button size="mini" style="text-align: center;border: #a2abf3; height: 30px; background-color: #a2abf3; width:100px;color: #FFFFFF"><i
+                                class="el-icon-download"></i>下载模板
+                        </button>
+                    </form>
+                </div>
+            </el-col>
+            <el-col :span="1" :offset="1">
+                <el-button style="" size="small" type="danger" @click="cleanTable">清空所有数据
+                </el-button>
+            </el-col>
+        </el-row>
+    </el-card>
+    <!--友情提示-->
+    <el-dialog
+            title=""
+            :visible.sync="up"
+            width="30%">
+        <div style="text-align: center;">
+            <el-result title="霍霍,你是不是得选择个文件,再上传？" subTitle="抱歉，请求错误">
+                <template slot="icon">
+                    <el-image src="/imgs/hwb.png"></el-image>
+                </template>
+            </el-result>
+        </div>
+    </el-dialog>
+</div>
+</body>
+<script src="/vue/jquery.min.js"></script>
+<script src="/vue/vue.min.js"></script>
+<script src="/vue/element-ui.min.js"></script>
+<!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+<script src="/js/upload.js"></script>
+</html>
